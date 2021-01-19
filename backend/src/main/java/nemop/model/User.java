@@ -59,7 +59,8 @@ public class User {
     }
 
 	public User(Long id, String firstName, String lastName, String username, String password, String eMail,
-			String gender, UserRole role, String photoUrl, List<Channel> createdChannels) {
+			String gender, UserRole role, Boolean active, String photoUrl, List<Channel> createdChannels,
+			List<Channel> favouriteChannels, List<Message> messages) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -69,9 +70,13 @@ public class User {
 		this.eMail = eMail;
 		this.gender = gender;
 		this.role = role;
+		this.active = active;
 		this.photoUrl = photoUrl;
 		this.createdChannels = createdChannels;
+		this.favouriteChannels = favouriteChannels;
+		this.messages = messages;
 	}
+
 
 
 
@@ -154,6 +159,51 @@ public class User {
 	public void setCreatedChannels(List<Channel> createdChannels) {
 		this.createdChannels = createdChannels;
 	}
+	
+	public void addCreatedChannels(Channel channel) {
+		if(channel.getCreatedByUser() != this) {
+			channel.setCreatedByUser(this);
+		}
+		createdChannels.add(channel);
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public List<Channel> getFavouriteChannels() {
+		return favouriteChannels;
+	}
+
+	public void setFavouriteChannels(List<Channel> favouriteChannels) {
+		this.favouriteChannels = favouriteChannels;
+	}
+	
+	public void addFavouriteChannels(Channel channel) {
+		if(channel.getStarredByUser() != this) {
+			channel.setStarredByUser(this);
+		}
+		favouriteChannels.add(channel);
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
+	}
+	
+	public void addMessages(Message message) {
+		if(message.getUser() != this) {
+			message.setUser(this);
+		}
+		messages.add(message);
+	}
 
 	@Override
     public boolean equals(Object obj) {
@@ -175,9 +225,12 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", password=" + password + ", eMail=" + eMail + ", gender=" + gender + ", profileImage="
-				+ "]";
+				+ ", password=" + password + ", eMail=" + eMail + ", gender=" + gender + ", role=" + role + ", active="
+				+ active + ", photoUrl=" + photoUrl + ", createdChannels=" + createdChannels + ", favouriteChannels="
+				+ favouriteChannels + ", messages=" + messages + "]";
 	}
+
+	
 
 	
 }

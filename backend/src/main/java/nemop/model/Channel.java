@@ -28,7 +28,10 @@ public class Channel {
     private String details;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
+    private User createdByUser;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User starredByUser;
     
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> messages;
@@ -38,13 +41,17 @@ public class Channel {
     	super();
     }
 
-	public Channel(Long id, String name, String details, User user) {
+	public Channel(Long id, String name, String details, User createdByUser, User starredByUser,
+			List<Message> messages) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.details = details;
-		this.user = user;
+		this.createdByUser = createdByUser;
+		this.starredByUser = starredByUser;
+		this.messages = messages;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -70,18 +77,50 @@ public class Channel {
 		this.details = details;
 	}
 
-	public User getUser() {
-		return user;
+	public User getCreatedByUser() {
+		return createdByUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setCreatedByUser(User createdByUser) {
+		this.createdByUser = createdByUser;
+		if(!createdByUser.getCreatedChannels().contains(this)){
+			createdByUser.getCreatedChannels().add(this);
+		}
+	}
+
+	public User getStarredByUser() {
+		return starredByUser;
+	}
+
+	public void setStarredByUser(User starredByUser) {
+		this.starredByUser = starredByUser;
+		if(!starredByUser.getFavouriteChannels().contains(this)){
+			starredByUser.getFavouriteChannels().add(this);
+		}
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
+	}
+	
+	public void addMessages(Message message) {
+		if(message.getChannel() != this) {
+			message.setChannel(this);
+		}
+		messages.add(message);
 	}
 
 	@Override
 	public String toString() {
-		return "Channel [id=" + id + ", name=" + name + ", details=" + details + ", user=" + user + "]";
+		return "Channel [id=" + id + ", name=" + name + ", details=" + details + ", createdByUser=" + createdByUser
+				+ ", starredByUser=" + starredByUser + ", messages=" + messages + "]";
 	}
+
+	
     
     
 }

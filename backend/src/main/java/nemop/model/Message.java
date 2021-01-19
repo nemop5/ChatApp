@@ -77,6 +77,9 @@ public class Message {
 
 	public void setChannel(Channel channel) {
 		this.channel = channel;
+		if(!channel.getMessages().contains(this)){
+			channel.getMessages().add(this);
+		}
 	}
 
 	public User getUser() {
@@ -85,6 +88,9 @@ public class Message {
 
 	public void setUser(User user) {
 		this.user = user;
+		if(!user.getMessages().contains(this)){
+			user.getMessages().add(this);
+		}
 	}
 
 
