@@ -11,9 +11,6 @@ public class ChannelDTO {
 	private Long createdByUserId;
 	private String createdByUsername;
 	
-	private Long starredByUserId;
-	private String starredByUsername;
-	
 	
 	public ChannelDTO() {
 		super();
@@ -59,20 +56,5 @@ public class ChannelDTO {
 		this.createdByUsername = createdByUsername;
 	}
 
-	public Long getStarredByUserId() {
-		return starredByUserId;
-	}
-
-	public void setStarredByUserId(Long starredByUserId) {
-		this.starredByUserId = starredByUserId;
-	}
-
-	public String getStarredByUsername() {
-		return starredByUsername;
-	}
-
-	public void setStarredByUsername(String starredByUsername) {
-		this.starredByUsername = starredByUsername;
-	}
 	
 }

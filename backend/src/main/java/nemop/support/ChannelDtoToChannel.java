@@ -27,12 +27,8 @@ public class ChannelDtoToChannel implements Converter<ChannelDTO, Channel>{
 			createdByUser = userService.findOne(channelDto.getCreatedByUserId()).get();
 		}
 		
-		User starredByUser = null;
-		if(channelDto.getStarredByUserId() != null) {
-			starredByUser = userService.findOne(channelDto.getStarredByUserId()).get();
-		}
 		
-		if(createdByUser!=null && starredByUser!=null) {
+		if(createdByUser!=null) {
 			Long id = channelDto.getId();
 			Channel channel = id == null ? new Channel() : channelService.findOne(id).get();
 
@@ -40,9 +36,6 @@ public class ChannelDtoToChannel implements Converter<ChannelDTO, Channel>{
 				channel.setId(channelDto.getId());
 				channel.setName(channelDto.getName());
 				channel.setDetails(channelDto.getDetails());
-				
-				channel.setCreatedByUser(createdByUser);
-				channel.setStarredByUser(starredByUser);
 			}
 		
 			return channel;

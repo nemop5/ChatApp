@@ -24,9 +24,6 @@ public class ChannelToChannelDto implements Converter<Channel, ChannelDTO> {
         channelDTO.setCreatedByUserId(channel.getCreatedByUser().getId());
         channelDTO.setCreatedByUsername(channel.getCreatedByUser().getUsername());
         
-        channelDTO.setStarredByUserId(channel.getStarredByUser().getId());
-        channelDTO.setStarredByUsername(channel.getStarredByUser().getUsername());
-        
         return channelDTO;
     }
 

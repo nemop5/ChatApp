@@ -30,9 +30,6 @@ public class Channel {
     @ManyToOne(fetch = FetchType.EAGER)
     private User createdByUser;
     
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User starredByUser;
-    
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> messages;
     
@@ -41,14 +38,13 @@ public class Channel {
     	super();
     }
 
-	public Channel(Long id, String name, String details, User createdByUser, User starredByUser,
+	public Channel(Long id, String name, String details, User createdByUser,
 			List<Message> messages) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.details = details;
 		this.createdByUser = createdByUser;
-		this.starredByUser = starredByUser;
 		this.messages = messages;
 	}
 
@@ -88,17 +84,6 @@ public class Channel {
 		}
 	}
 
-	public User getStarredByUser() {
-		return starredByUser;
-	}
-
-	public void setStarredByUser(User starredByUser) {
-		this.starredByUser = starredByUser;
-		if(!starredByUser.getFavouriteChannels().contains(this)){
-			starredByUser.getFavouriteChannels().add(this);
-		}
-	}
-
 	public List<Message> getMessages() {
 		return messages;
 	}
@@ -117,10 +102,8 @@ public class Channel {
 	@Override
 	public String toString() {
 		return "Channel [id=" + id + ", name=" + name + ", details=" + details + ", createdByUser=" + createdByUser
-				+ ", starredByUser=" + starredByUser + ", messages=" + messages + "]";
+				+ ", messages=" + messages + "]";
 	}
-
-	
     
     
 }

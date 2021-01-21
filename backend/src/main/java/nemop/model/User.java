@@ -1,8 +1,5 @@
 package nemop.model;
 
-import java.io.Serializable;
-import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -44,10 +41,10 @@ public class User {
     @Column
     private String photoUrl;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Channel> createdChannels;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Channel> favouriteChannels;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -181,13 +178,6 @@ public class User {
 
 	public void setFavouriteChannels(List<Channel> favouriteChannels) {
 		this.favouriteChannels = favouriteChannels;
-	}
-	
-	public void addFavouriteChannels(Channel channel) {
-		if(channel.getStarredByUser() != this) {
-			channel.setStarredByUser(this);
-		}
-		favouriteChannels.add(channel);
 	}
 
 	public List<Message> getMessages() {

@@ -7,9 +7,9 @@ INSERT INTO users (id, first_name, last_name,  username, password, e_mail, gende
 INSERT INTO users (id, first_name, last_name,  username, password, e_mail, gender, role, active, photo_url) VALUES(3, 'Petar', 'Jovic', 'petar', '$2y$12$i6/mU4w0HhG8RQRXHjNCa.tG2OwGSVXb0GYUnf8MZUdeadE4voHbC', 'petar@gmail.com', 'male', 'USER', false, '');
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Adding channels
-INSERT INTO channels (id, name, details, user_id) VALUES (1, 'Food', 'Channel about food', 1);
-INSERT INTO channels (id, name, details, user_id) VALUES (2, 'Sport', 'Channel about sport', 1);
-INSERT INTO channels (id, name, details, user_id) VALUES (3, 'Programming', 'Channel about programming', 3);
+INSERT INTO channels (id, name, details, created_by_user_id) VALUES (1, 'Food', 'Channel about food', 1);
+INSERT INTO channels (id, name, details, created_by_user_id) VALUES (2, 'Sport', 'Channel about sport', 1);
+INSERT INTO channels (id, name, details, created_by_user_id) VALUES (3, 'Programming', 'Channel about programming', 3);
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Adding messages
 INSERT INTO messages (id, content, time_stamp, channel_id, user_id) VALUES (1, 'Hello Everyone, Welcome to Food Channel!!!', '2021-01-01 09:00:00', 1, 1);
