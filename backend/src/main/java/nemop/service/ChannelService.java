@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import nemop.model.Channel;
+import nemop.web.dto.ChannelDTO;
 
 public interface ChannelService {
 
@@ -11,9 +12,9 @@ public interface ChannelService {
 
     List<Channel> findAll();
 
-    Channel save(Channel channel);
+    Channel save(ChannelDTO channelDto);
 
-    void delete(Long id);
+    Channel delete(Long id);
 
     Optional<Channel> findByName(String name);
 

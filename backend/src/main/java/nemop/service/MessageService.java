@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import nemop.model.Message;
+import nemop.web.dto.MessageDTO;
 
 public interface MessageService {
 
@@ -11,9 +12,9 @@ public interface MessageService {
 
     List<Message> findAll();
 
-    Message save(Message message);
+    Message save(MessageDTO messageDto);
 
-    void delete(Long id);
+    Message delete(Long id);
 
     Optional<Message> findByContent(String content);
 }

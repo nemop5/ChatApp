@@ -9,12 +9,17 @@ import org.springframework.stereotype.Service;
 import nemop.model.Message;
 import nemop.repository.MessageRepository;
 import nemop.service.MessageService;
+import nemop.support.MessageDtoToMessage;
+import nemop.web.dto.MessageDTO;
 
 @Service
 public class JpaMessageService implements MessageService {
 
 	@Autowired
 	private MessageRepository messageRepository;
+	
+	@Autowired
+	private MessageDtoToMessage toMessage;
 	
 	@Override
 	public Optional<Message> findOne(Long id) {
@@ -27,13 +32,22 @@ public class JpaMessageService implements MessageService {
 	}
 
 	@Override
-	public Message save(Message message) {
-		return messageRepository.save(message);
+	public Message save(MessageDTO messageDto) {
+		Message message = toMessage.convert(messageDto);
+		Message savedMessage = messageRepository.save(message);
+		return savedMessage;
 	}
 
 	@Override
-	public void delete(Long id) {
-		messageRepository.deleteById(id);
+	public Message delete(Long id) {
+		Optional<Message> messageOptional = messageRepository.findById(id);
+		if(messageOptional.isPresent()) {
+			Message message = messageOptional.get();
+			messageRepository.deleteById(id);
+			return message;
+		}
+		
+		return null;
 		
 	}
 
