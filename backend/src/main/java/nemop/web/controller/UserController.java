@@ -73,11 +73,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // KorisnikRegistracijaDTO nasleđuje KorisnikDTO, pa možemo koristiti konverter za njega
-        // ostaje da dodatno konvertujemo polje kojeg u njemu nema - password
+        //convert - password field
         User user = toUser.convert(dto);
 
-        // dodatak za zadatak 1
+        // setting up password for user in db
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
         user.setPassword(encodedPassword);
 
@@ -86,13 +85,13 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('KORISNIK', 'ADMIN')")
     @PutMapping(value= "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO korisnikDTO){
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO userDto){
 
-        if(!id.equals(korisnikDTO.getId())) {
+        if(!id.equals(userDto.getId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        User korisnik = toUser.convert(korisnikDTO);
+        User korisnik = toUser.convert(userDto);
 
         return new ResponseEntity<>(toUserDto.convert(userService.save(korisnik)),HttpStatus.OK);
     }

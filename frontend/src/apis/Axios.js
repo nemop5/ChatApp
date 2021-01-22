@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {logout} from '../services/auth';
 
 
 let Axios = axios.create({
@@ -22,12 +21,12 @@ Axios.interceptors.response.use(
   function succes(response){
     return response;
   },
-  function fail(error){
+  function failure(error){
     let token = window.localStorage.getItem("token");
 
     if(token){
       if(error.response && error.response.status === 403){
-        logout();
+        //logout();
       }
     }
 
