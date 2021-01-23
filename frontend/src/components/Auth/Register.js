@@ -4,24 +4,10 @@ import { Link } from "react-router-dom";
 import Axios from "../../apis/Axios";
 
 class Register extends React.Component {
-  state = {
-    firstName: "",
-    lastName: "",
-    username: "",
-    eMail: "",
-    gender: "",
-    password: "",
-    repeatedPassword: "",
-  };
+  constructor(props) {
+    super(props);
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  async handleSubmit(event) {
-    event.preventDefault();
-
-    let userDto = {
+    let user = {
       firstName: "",
       lastName: "",
       username: "",
@@ -30,35 +16,76 @@ class Register extends React.Component {
       password: "",
       repeatedPassword: "",
     };
+  
+    this.state = {
+      user: user,
+      errors: [],
+    };
+  }
 
+  displayErrors = errors =>
+  errors.map((error, i) => <p key={i}>{error.message}</p>);
+
+  handleChange(event) {
+    let control = event.target;
+
+    let name = control.name;
+    let value = control.value;
+
+    let user = this.state.user;
+    user[name] = value;
+
+    this.setState({ user: user });
+  };
+
+  async handleSubmit(event) {
+    event.preventDefault();
     try{
-      await Axios.post("/users", userDto);
+      await Axios.post("/users/", this.state.user);
+
+      let user = {
+        firstName: "",
+        lastName: "",
+        username: "",
+        eMail: "",
+        password: "",
+        repeatedPassword: "",
+      };
+
+      this.setState({ user: user });
+
     }catch(error){
       console.log(error);
       alert("Could not register.")
     }
   };
 
+  handleInputError = (errors, inputName) => {
+    return errors.some(error => error.message.toLowerCase().includes(inputName))
+      ? "error"
+      : "";
+  };
+
   render() {
-    const { fitstName, lastName, username, eMail, password, repeatedPassword } = this.state;
+    const { errors } = this.state
 
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" icon color="orange" textAlign="center">
-            <Icon name="user plus" color="orange" />
+          <Header as="h2" icon color="violet" textAlign="center">
+            <Icon name="user plus" color="violet" />
             Register for ChatApp
           </Header>
-          <Form onSubmit={this.handleSubmit} size="large">
+          <Form onSubmit={(event) => this.handleSubmit(event)} size="large">
             <Segment stacked>
               <Form.Input
                 fluid
-                name="fistName"
+                name="firstName"
                 icon="user"
                 iconPosition="left"
                 placeholder="First name"
-                onChange={this.handleChange}
-                value={fitstName}
+                onChange={(event) => this.handleChange(event)}
+                className={this.handleInputError(errors, "firstName")}
                 type="text"
               />
 
@@ -68,8 +95,8 @@ class Register extends React.Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="Last name"
-                onChange={this.handleChange}
-                value={lastName}
+                onChange={(event) => this.handleChange(event)}
+                className={this.handleInputError(errors, "lastName")}
                 type="text"
               />
 
@@ -79,8 +106,8 @@ class Register extends React.Component {
                 icon="user circle"
                 iconPosition="left"
                 placeholder="Username"
-                onChange={this.handleChange}
-                value={username}
+                onChange={(event) => this.handleChange(event)}
+                className={this.handleInputError(errors, "username")}
                 type="text"
               />
 
@@ -90,8 +117,8 @@ class Register extends React.Component {
                 icon="mail"
                 iconPosition="left"
                 placeholder="E-mail adress"
-                onChange={this.handleChange}
-                value={eMail}
+                onChange={(event) => this.handleChange(event)}
+                className={this.handleInputError(errors, "eMail")}
                 type="email"
               />
 
@@ -101,8 +128,8 @@ class Register extends React.Component {
                 icon="lock"
                 iconPosition="left"
                 placeholder="Password"
-                onChange={this.handleChange}
-                value={password}
+                onChange={(event) => this.handleChange(event)}
+                className={this.handleInputError(errors, "password")}
                 type="password"
               />
 
@@ -112,16 +139,22 @@ class Register extends React.Component {
                 icon="repeat"
                 iconPosition="left"
                 placeholder="Password Confirmation"
-                onChange={this.handleChange}
-                value={repeatedPassword}
+                onChange={(event) => this.handleChange(event)}
+                className={this.handleInputError(errors, "repeatedPassword")}
                 type="password"
               />
 
-              <Button color="orange" fluid size="large">
+              <Button color="violet" fluid size="large">
                 Submit
               </Button>
             </Segment>
           </Form>
+          {errors.length > 0 && (
+            <Message error>
+              <h3>Error</h3>
+              {this.displayErrors(errors)}
+            </Message>
+          )}
           <Message>
             Already a user? <Link to="/login">Login</Link>
           </Message>

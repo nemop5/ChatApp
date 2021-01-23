@@ -22,9 +22,7 @@ public class UserDTO {
     @Email
     private String eMail;
 	
-    @NotBlank
 	private String gender;
-    
     
     private String photoUrl;
 
