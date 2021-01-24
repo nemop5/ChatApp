@@ -1,6 +1,8 @@
 import React from "react";
 import { Grid, Form, Segment, Button, Header, Message, Icon} from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import jwtDecode from 'jwt-decode';
+import Axios from "../../apis/Axios";
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,6 +17,27 @@ class Login extends React.Component {
 
   }
 
+  async login(username, password) {
+    let dto = {
+      username: username,
+      password: password
+    };
+    try {
+      let result = await Axios.post("/users/auth", dto)
+      console.log(jwtDecode(result.data));
+
+      window.localStorage.setItem("token", result.data);
+      window.localStorage.setItem("username", jwtDecode(result.data).sub);
+      window.location.reload()
+    } catch(error) {
+      console.log(error);
+      this.setState({
+        errors: this.state.errors.concat(error),
+        loading: false
+      });
+    }
+  }
+
   displayErrors = errors =>
     errors.map((error, i) => <p key={i}>{error.message}</p>);
 
@@ -26,13 +49,7 @@ class Login extends React.Component {
     event.preventDefault();
     if (this.isFormValid(this.state)) {
       this.setState({ errors: [], loading: true });
-      //login(this.state.username, this.state.password);
-    }
-    else {
-      this.setState({
-        errors: this.state.errors,
-        loading: false
-      });
+      this.login(this.state.username, this.state.password);
     }
   };
 

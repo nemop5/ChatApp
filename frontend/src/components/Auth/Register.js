@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Form, Segment, Button, Header, Message, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import Axios from "../../apis/Axios";
+import md5 from "md5";
 
 class Register extends React.Component {
   constructor(props) {
@@ -12,7 +13,6 @@ class Register extends React.Component {
       lastName: "",
       username: "",
       eMail: "",
-      gender: "",
       password: "",
       repeatedPassword: "",
     };
@@ -20,13 +20,52 @@ class Register extends React.Component {
     this.state = {
       user: user,
       errors: [],
+      loading: false
     };
+  }
+
+  isFormValid = () => {
+    let errors = [];
+    let error;
+
+    if (this.isFormEmpty(this.state.user)) {
+      error = { message: "Fill in all fields"};
+      this.setState({ errors: errors.concat(error) });
+      return false;
+    } else if (!this.isPasswordValid(this.state.user)) {
+      error = { message: "Password is invalid" };
+      this.setState({ errors: errors.concat(error) });
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  isFormEmpty = ({ firstName, lastName, username, eMail, password, repeatedPassword }) => {
+    return (
+      !firstName.length ||
+      !lastName.length ||
+      !username.length ||
+      !eMail.length ||
+      !password.length ||
+      !repeatedPassword.length
+    );
+  }
+
+  isPasswordValid = ({ password, repeatedPassword }) => {
+    if (password.length < 6 || repeatedPassword.length < 6) {
+      return false;
+    } else if (password !== repeatedPassword) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   displayErrors = errors =>
   errors.map((error, i) => <p key={i}>{error.message}</p>);
 
-  handleChange(event) {
+  handleChange = event => {
     let control = event.target;
 
     let name = control.name;
@@ -38,25 +77,31 @@ class Register extends React.Component {
     this.setState({ user: user });
   };
 
+
   async handleSubmit(event) {
     event.preventDefault();
-    try{
-      await Axios.post("/users/", this.state.user);
-
-      let user = {
-        firstName: "",
-        lastName: "",
-        username: "",
-        eMail: "",
-        password: "",
-        repeatedPassword: "",
-      };
-
-      this.setState({ user: user });
-
-    }catch(error){
-      console.log(error);
-      alert("Could not register.")
+    if(this.isFormValid()) {
+      try{
+        await Axios.post("/users/", this.state.user);
+  
+        let user = {
+          firstName: "",
+          lastName: "",
+          username: "",
+          eMail: "",
+          password: "",
+          repeatedPassword: "",
+        };
+  
+        this.setState({ user: user });
+  
+      }catch(error){
+        console.log(error);
+        this.setState({
+          errors: this.state.errors.concat(error),
+          loading: false
+        });
+      }
     }
   };
 
@@ -84,8 +129,9 @@ class Register extends React.Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="First name"
-                onChange={(event) => this.handleChange(event)}
+                onChange={this.handleChange}
                 className={this.handleInputError(errors, "firstName")}
+                value={this.state.user.firstName}
                 type="text"
               />
 
@@ -95,8 +141,9 @@ class Register extends React.Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="Last name"
-                onChange={(event) => this.handleChange(event)}
+                onChange={this.handleChange}
                 className={this.handleInputError(errors, "lastName")}
+                value={this.state.user.lastName}
                 type="text"
               />
 
@@ -106,8 +153,9 @@ class Register extends React.Component {
                 icon="user circle"
                 iconPosition="left"
                 placeholder="Username"
-                onChange={(event) => this.handleChange(event)}
+                onChange={this.handleChange}
                 className={this.handleInputError(errors, "username")}
+                value={this.state.user.username}
                 type="text"
               />
 
@@ -117,8 +165,9 @@ class Register extends React.Component {
                 icon="mail"
                 iconPosition="left"
                 placeholder="E-mail adress"
-                onChange={(event) => this.handleChange(event)}
+                onChange={this.handleChange}
                 className={this.handleInputError(errors, "eMail")}
+                value={this.state.user.eMail}
                 type="email"
               />
 
@@ -130,6 +179,7 @@ class Register extends React.Component {
                 placeholder="Password"
                 onChange={(event) => this.handleChange(event)}
                 className={this.handleInputError(errors, "password")}
+                value={this.state.user.password}
                 type="password"
               />
 
@@ -141,6 +191,7 @@ class Register extends React.Component {
                 placeholder="Password Confirmation"
                 onChange={(event) => this.handleChange(event)}
                 className={this.handleInputError(errors, "repeatedPassword")}
+                value={this.state.user.repeatedPassword}
                 type="password"
               />
 

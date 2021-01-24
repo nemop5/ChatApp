@@ -33,10 +33,10 @@ public class User {
     private String gender;
     
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRole role = UserRole.USER;
     
     @Column
-    private Boolean active;
+    private Boolean active = false;
     
     @Column
     private String photoUrl;
