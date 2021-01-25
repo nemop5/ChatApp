@@ -4,6 +4,7 @@ import App from "./components/App";
 import NotFound from "./components/NotFound";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
+import Spinner from "./Spinner";
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -32,22 +33,26 @@ class Root extends React.Component {
   }
 
   render() {
-    return (
-      <Router>
+    return this.props.isLoading ? (
+      <Spinner />
+    ) : (
         <Switch>
           <Route exact path="/" component={App} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route component={NotFound} />
         </Switch>
-      </Router>
     );
   }
-} 
+}
+
+const mapStateFromProps = state => ({
+  isLoading: state.user.isLoading
+});
 
 const RootWithAuth = withRouter(
   connect(
-    null,
+    mapStateFromProps,
     { setUser }
   )(Root)
 );
