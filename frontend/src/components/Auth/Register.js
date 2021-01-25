@@ -130,7 +130,7 @@ class Register extends React.Component {
                 iconPosition="left"
                 placeholder="First name"
                 onChange={this.handleChange}
-                className={this.handleInputError(errors, "firstName")}
+                className={this.handleInputError(this.state.errors, "firstName")}
                 value={this.state.user.firstName}
                 type="text"
               />
@@ -142,7 +142,7 @@ class Register extends React.Component {
                 iconPosition="left"
                 placeholder="Last name"
                 onChange={this.handleChange}
-                className={this.handleInputError(errors, "lastName")}
+                className={this.handleInputError(this.state.errors, "lastName")}
                 value={this.state.user.lastName}
                 type="text"
               />
@@ -154,7 +154,7 @@ class Register extends React.Component {
                 iconPosition="left"
                 placeholder="Username"
                 onChange={this.handleChange}
-                className={this.handleInputError(errors, "username")}
+                className={this.handleInputError(this.state.errors, "username")}
                 value={this.state.user.username}
                 type="text"
               />
@@ -166,7 +166,7 @@ class Register extends React.Component {
                 iconPosition="left"
                 placeholder="E-mail adress"
                 onChange={this.handleChange}
-                className={this.handleInputError(errors, "eMail")}
+                className={this.handleInputError(this.state.errors, "eMail")}
                 value={this.state.user.eMail}
                 type="email"
               />
@@ -178,7 +178,7 @@ class Register extends React.Component {
                 iconPosition="left"
                 placeholder="Password"
                 onChange={(event) => this.handleChange(event)}
-                className={this.handleInputError(errors, "password")}
+                className={this.handleInputError(this.state.errors, "password")}
                 value={this.state.user.password}
                 type="password"
               />
@@ -190,7 +190,7 @@ class Register extends React.Component {
                 iconPosition="left"
                 placeholder="Password Confirmation"
                 onChange={(event) => this.handleChange(event)}
-                className={this.handleInputError(errors, "repeatedPassword")}
+                className={this.handleInputError(this.state.errors, "repeatedPassword")}
                 value={this.state.user.repeatedPassword}
                 type="password"
               />
@@ -200,10 +200,10 @@ class Register extends React.Component {
               </Button>
             </Segment>
           </Form>
-          {errors.length > 0 && (
+          {this.state.errors.length > 0 && (
             <Message error>
               <h3>Error</h3>
-              {this.displayErrors(errors)}
+              {this.displayErrors(this.state.errors)}
             </Message>
           )}
           <Message>

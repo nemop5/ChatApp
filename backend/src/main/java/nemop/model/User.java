@@ -29,9 +29,6 @@ public class User {
     @Column(unique = true, nullable = false)
     private String eMail;
     
-    @Column(nullable=false)
-    private String gender;
-    
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
     
@@ -56,7 +53,7 @@ public class User {
     }
 
 	public User(Long id, String firstName, String lastName, String username, String password, String eMail,
-			String gender, UserRole role, Boolean active, String photoUrl, List<Channel> createdChannels,
+			UserRole role, Boolean active, String photoUrl, List<Channel> createdChannels,
 			List<Channel> favouriteChannels, List<Message> messages) {
 		super();
 		this.id = id;
@@ -65,7 +62,6 @@ public class User {
 		this.username = username;
 		this.password = password;
 		this.eMail = eMail;
-		this.gender = gender;
 		this.role = role;
 		this.active = active;
 		this.photoUrl = photoUrl;
@@ -123,14 +119,6 @@ public class User {
 
 	public void seteMail(String eMail) {
 		this.eMail = eMail;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
 	}
 
 	public UserRole getRole() {
@@ -215,7 +203,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", password=" + password + ", eMail=" + eMail + ", gender=" + gender + ", role=" + role + ", active="
+				+ ", password=" + password + ", eMail=" + eMail + ", role=" + role + ", active="
 				+ active + ", photoUrl=" + photoUrl + ", createdChannels=" + createdChannels + ", favouriteChannels="
 				+ favouriteChannels + ", messages=" + messages + "]";
 	}

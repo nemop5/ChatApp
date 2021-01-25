@@ -21,8 +21,6 @@ public class UserDTO {
     @NotEmpty
     @Email
     private String eMail;
-	
-	private String gender;
     
     private String photoUrl;
 
@@ -66,14 +64,6 @@ public class UserDTO {
 
 	public void seteMail(String eMail) {
 		this.eMail = eMail;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
 	}
 
 	public String getPhotoUrl() {

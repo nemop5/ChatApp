@@ -17,6 +17,14 @@ class Login extends React.Component {
 
   }
 
+  componentDidMount() {
+    let token = window.localStorage.getItem("token");
+
+    if(token){
+      this.props.history.push("/");
+    }
+  }
+
   async login(username, password) {
     let dto = {
       username: username,
@@ -24,7 +32,6 @@ class Login extends React.Component {
     };
     try {
       let result = await Axios.post("/users/auth", dto)
-      console.log(jwtDecode(result.data));
 
       window.localStorage.setItem("token", result.data);
       window.localStorage.setItem("username", jwtDecode(result.data).sub);
